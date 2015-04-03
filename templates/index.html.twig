@@ -1,0 +1,164 @@
+{% extends "layout.html.twig" %}
+
+{% block autocomplete %}
+	<h3>Введите нaзвание города:</h3>
+	<div class="form-group">
+		<div class="col-sm-12">
+			<input placeholder="Город..." data-provide="typeahead" autocomplete="off" type="text" name="name" id="typeahead-input" class="form-control" value="" title="" required="required" >
+			<input type="hidden" id="hiddenInputElement"/>
+		</div>
+	</div>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			var objects = [];
+			var map = {};
+			$('#typeahead-input').typeahead({
+				minLength:3,
+				items: 'all',
+				source: function (query, process) {
+					return $.get('/search/' + query, function (data) {
+						objects = [];
+						map = {};
+						//var d = [{"id":1,"label":"machin"},{"id":2,"label":"truc"}]
+						$.each(data, function(i, object) {
+							map[object.full_name] = object;
+							objects.push(object.full_name);
+						});
+						return process(objects);
+					});
+				},
+				updater: function(item) {
+					$('#hiddenInputElement').val(map[item].id);
+					return item;
+				}
+			});
+		})
+	</script>
+{% endblock %}
+
+{% block suggestion %}
+	<h3>Введите нaзвание города:</h3>
+	<form action="/suggestion/" method="get" role="form">
+		<div class="form-group">
+			<input type="text" class="form-control" name="q" id="" placeholder="Город...">
+		</div>
+		<button type="submit" class="btn btn-primary">Submit</button>
+	</form>
+	{% if suggestions is defined and suggestions is not empty %}
+		<h4>Возможно вы имели ввиду:</h4>
+		<ol>
+			{% for sug in suggestions %}
+				<li>{{ sug['full_name'] }}</li>
+			{% endfor %}
+		</ol>
+	{% endif %}
+{% endblock %}
+
+{% block autocompleteMySQL %}
+	<h3>Введите нaзвание города:</h3>
+	<div class="form-group">
+		<div class="col-sm-12">
+			<input placeholder="Город..." data-provide="typeahead" autocomplete="off" type="text" name="name" id="typeahead-input-mysql" class="form-control" value="" title="" required="required" >
+			<input type="hidden" id="hiddenInputElement"/>
+		</div>
+	</div>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			var objects = [];
+			var map = {};
+			$('#typeahead-input-mysql').typeahead({
+				minLength:3,
+				items: 'all',
+				source: function (query, process) {
+					return $.get('/mysql/search/' + query, function (data) {
+						objects = [];
+						map = {};
+						//var d = [{"id":1,"label":"machin"},{"id":2,"label":"truc"}]
+						$.each(data, function(i, object) {
+							map[object.full_name] = object;
+							objects.push(object.full_name);
+						});
+						return process(objects);
+					});
+				},
+				updater: function(item) {
+					$('#hiddenInputElement').val(map[item].id);
+					return item;
+				}
+			});
+		})
+	</script>
+{% endblock %}
+
+{% block suggestionMySQL %}
+	<h3>Введите нaзвание города:</h3>
+	<form action="/mysql/suggestion/" method="get" role="form">
+		<div class="form-group">
+			<input type="text" class="form-control" name="q" id="" placeholder="Город...">
+		</div>
+		<button type="submit" class="btn btn-primary">Submit</button>
+	</form>
+	{% if suggestionsMySQL is defined and suggestionsMySQL is not empty %}
+		<h4>Возможно вы имели ввиду:</h4>
+		<ol>
+			{% for sug in suggestionsMySQL %}
+				<li>{{ sug['full_name'] }}</li>
+			{% endfor %}
+		</ol>
+	{% endif %}
+{% endblock %}
+
+
+{% block autocompleteZend %}
+	<h3>Введите нaзвание города:</h3>
+	<div class="form-group">
+		<div class="col-sm-12">
+			<input placeholder="Город..." data-provide="typeahead" autocomplete="off" type="text" name="name" id="typeahead-input-zend" class="form-control" value="" title="" required="required" >
+			<input type="hidden" id="hiddenInputElement"/>
+		</div>
+	</div>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			var objects = [];
+			var map = {};
+			$('#typeahead-input-zend').typeahead({
+				minLength:3,
+				items: 'all',
+				source: function (query, process) {
+					return $.get('/zend/search/' + query, function (data) {
+						objects = [];
+						map = {};
+						//var d = [{"id":1,"label":"machin"},{"id":2,"label":"truc"}]
+						$.each(data, function(i, object) {
+							map[object.full_name] = object;
+							objects.push(object.full_name);
+						});
+						return process(objects);
+					});
+				},
+				updater: function(item) {
+					$('#hiddenInputElement').val(map[item].id);
+					return item;
+				}
+			});
+		})
+	</script>
+{% endblock %}
+
+{% block suggestionZend %}
+	<h3>Введите нaзвание города:</h3>
+	<form action="/zend/suggestion/" method="get" role="form">
+		<div class="form-group">
+			<input type="text" class="form-control" name="q" id="" placeholder="Город...">
+		</div>
+		<button type="submit" class="btn btn-primary">Submit</button>
+	</form>
+	{% if suggestionsZend is defined and suggestionsZend is not empty %}
+		<h4>Возможно вы имели ввиду:</h4>
+		<ol>
+			{% for sug in suggestionsMySQL %}
+				<li>{{ sug['full_name'] }}</li>
+			{% endfor %}
+		</ol>
+	{% endif %}
+{% endblock %}
